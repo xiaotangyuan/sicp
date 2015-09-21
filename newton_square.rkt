@@ -5,19 +5,36 @@
 (define (average a b)
   (/ (+ a b) 2))
 
+;newif
+(define (new-if predicate then-clause else-clause)
+  (cond (predicate then-clause)
+        (else else-clause))
+  )
 ;(average 10 2)
 
 ;满足条件
-(define (isok? neednum num)
+(define (isok-iter2? neednum num)
    (< (abs (- (* neednum neednum) num)) 0.01))
 
+;改进猜测数值 平方根
+(define (improve-2 innum num)
+  (average (/ num innum) innum ))
+
+;满足条件
+(define (isok-iter3? neednum num)
+   (< (abs (- (* neednum neednum neednum) num)) 0.01))
+;改进猜测数值 立方根
+(define (improve-3 innum num)
+  (/ (+ (/ num (* innum innum))
+        (* 2 innum))
+     3))
 ;递归改进数值并测试是否满足条件
 (define (guess innum num)
-  (if (isok? innum num) innum (guess (average (/ num innum) innum ) num ) )
-  )
+   (if (isok-iter3? innum num) innum (guess (improve-3 innum num) num) )
+   )
 
 (define (sqrt-iter num)
-  (guess 1 num)
+  (guess 2 num)
   )
 
-(sqrt-iter 9)
+(sqrt-iter 64)
